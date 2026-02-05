@@ -65,15 +65,6 @@
             color: #ff4757;
         }
 
-        .message {
-            margin-top: 25px;
-            font-size: 1.3rem;
-            color: #b71c1c;
-            font-weight: bold;
-            min-height: 40px;
-            z-index: 10;
-        }
-
         .heart-particle {
             position: absolute;
             color: rgba(255, 255, 255, 0.7);
@@ -102,25 +93,37 @@
 </head>
 <body>
 
-    <div class="name-tag">მარო ✨</div>
-    <h1 id="question">იქნები ჩემი ვალენტინი? ❤️</h1>
-    
-    <div class="message" id="message"></div>
+    <audio id="bgMusic" loop>
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="clickSound">
+        <source src="https://assets.mixkit.co/active_storage/sfx/2571/2571-preview.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="celebrateSound">
+        <source src="https://assets.mixkit.co/active_storage/sfx/2013/2013-preview.mp3" type="audio/mpeg">
+    </audio>
 
-    <div class="buttons">
-        <button id="yesBtn" onclick="celebrate()">კი</button>
-        <button id="noBtn" onclick="reject()">არა</button>
+    <div class="name-tag">მარო ✨</div>
+    <div id="mainContent">
+        <h1 id="question">იქნები ჩემი ვალენტინი? ❤️</h1>
+        <div class="buttons">
+            <button id="yesBtn" onclick="celebrate()">კი</button>
+            <button id="noBtn" onclick="reject()">არა</button>
+        </div>
     </div>
 
     <script>
         let yesSize = 1;
-        const noMessages = [
-            "არა!",
-            "ბუბი დაფიქრდი",
-            "პატარაა!",
-            "ბოლო შანსი!"
-        ];
+        const noMessages = ["არა!", "ბუბი დაფიქრდი", "პატარაა!", "ბოლო შანსი!"];
         let msgIndex = 0;
+        let musicStarted = false;
+
+        function startMusic() {
+            if (!musicStarted) {
+                document.getElementById('bgMusic').play();
+                musicStarted = true;
+            }
+        }
 
         function createHeart() {
             const heart = document.createElement('div');
@@ -136,32 +139,13 @@
         setInterval(createHeart, 350);
 
         function reject() {
-            // "კი" ღილაკის გადიდება
+            startMusic(); // მუსიკის ჩართვა პირველივე დაჭერაზე
+            document.getElementById('clickSound').play(); // დაწკაპუნების ხმა
+
             yesSize += 0.35;
             const yesBtn = document.getElementById('yesBtn');
             yesBtn.style.transform = `scale(${yesSize})`;
             
-            // "არა" ღილაკის ტექსტის შეცვლა თანმიმდევრობით
             const noBtn = document.getElementById('noBtn');
             if (msgIndex < noMessages.length) {
-                noBtn.innerText = noMessages[msgIndex];
-                msgIndex++;
-            } else {
-                // თუ ტექსტები გათავდა, ისევ ბოლო ტექსტი დარჩეს ან გაქრეს
-                noBtn.innerText = "სხვა გზა არ გაქვს! 🥰";
-            }
-        }
-
-        function celebrate() {
-            document.body.innerHTML = `
-                <div style="font-size: 5rem;">💖</div>
-                <h1 class="celebration-text">ვიცოდი, რომ დამთანხმდებოდი, მარო! ❤️</h1>
-                <p style="font-size: 1.5rem; color: #d32f2f;">საუკეთესო ვალენტინობა გვექნება!</p>
-                <div style="margin-top: 20px;">🌹🌷🌸</div>
-            `;
-            document.body.style.background = "linear-gradient(135deg, #fce4ec 0%, #f8bbd0 100%)";
-            setInterval(createHeart, 100);
-        }
-    </script>
-</body>
-</html>
+                noBtn.innerText = noMessages
