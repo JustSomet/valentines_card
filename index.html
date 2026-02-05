@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>მარო, ჩემი ვალენტინი გახდები? ❤️</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+            overflow: hidden;
+            text-align: center;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #d32f2f;
+            font-size: 2.2rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            z-index: 10;
+        }
+
+        .name-tag {
+            font-size: 1.5rem;
+            color: #b71c1c;
+            margin-bottom: 10px;
+            font-weight: bold;
+            z-index: 10;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            justify-content: center;
+            margin-top: 30px;
+            z-index: 10;
+        }
+
+        button {
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transition: all 0.2s ease-out;
+            font-weight: bold;
+        }
+
+        #yesBtn {
+            background-color: #ff4757;
+            color: white;
+            min-width: 80px;
+        }
+
+        #noBtn {
+            background-color: #ffffff;
+            color: #ff4757;
+        }
+
+        .message {
+            margin-top: 25px;
+            font-size: 1.3rem;
+            color: #b71c1c;
+            font-weight: bold;
+            min-height: 40px;
+            z-index: 10;
+        }
+
+        .heart-particle {
+            position: absolute;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 20px;
+            user-select: none;
+            pointer-events: none;
+            animation: moveUp 4s linear infinite;
+        }
+
+        @keyframes moveUp {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+        }
+
+        .celebration-text {
+            color: #ff4757;
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="name-tag">მარო ✨</div>
+    <h1 id="question">იქნები ჩემი ვალენტინი? ❤️</h1>
+    
+    <div class="message" id="message"></div>
+
+    <div class="buttons">
+        <button id="yesBtn" onclick="celebrate()">კი</button>
+        <button id="noBtn" onclick="reject()">არა</button>
+    </div>
+
+    <script>
+        let yesSize = 1;
+        const noMessages = [
+            "არა!",
+            "ბუბი დაფიქრდი",
+            "პატარაა!",
+            "ბოლო შანსი!"
+        ];
+        let msgIndex = 0;
+
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('heart-particle');
+            heart.innerHTML = '❤️';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.animationDuration = (Math.random() * 2 + 3) + 's';
+            heart.style.fontSize = (Math.random() * 10 + 15) + 'px';
+            document.body.appendChild(heart);
+            setTimeout(() => { heart.remove(); }, 4000);
+        }
+
+        setInterval(createHeart, 350);
+
+        function reject() {
+            // "კი" ღილაკის გადიდება
+            yesSize += 0.35;
+            const yesBtn = document.getElementById('yesBtn');
+            yesBtn.style.transform = `scale(${yesSize})`;
+            
+            // "არა" ღილაკის ტექსტის შეცვლა თანმიმდევრობით
+            const noBtn = document.getElementById('noBtn');
+            if (msgIndex < noMessages.length) {
+                noBtn.innerText = noMessages[msgIndex];
+                msgIndex++;
+            } else {
+                // თუ ტექსტები გათავდა, ისევ ბოლო ტექსტი დარჩეს ან გაქრეს
+                noBtn.innerText = "სხვა გზა არ გაქვს! 🥰";
+            }
+        }
+
+        function celebrate() {
+            document.body.innerHTML = `
+                <div style="font-size: 5rem;">💖</div>
+                <h1 class="celebration-text">ვიცოდი, რომ დამთანხმდებოდი, მარო! ❤️</h1>
+                <p style="font-size: 1.5rem; color: #d32f2f;">საუკეთესო ვალენტინობა გვექნება!</p>
+                <div style="margin-top: 20px;">🌹🌷🌸</div>
+            `;
+            document.body.style.background = "linear-gradient(135deg, #fce4ec 0%, #f8bbd0 100%)";
+            setInterval(createHeart, 100);
+        }
+    </script>
+</body>
+</html>
